@@ -3,15 +3,30 @@
   <head>
     <title>Canvas tutorial</title>
     <script type="text/javascript">
-      var canvas = document.getElementById('tutorial');
-      
+    var canvas_game = document.getElementById('game');
+    //进行背景的绘制
+    function back_init(){
+        var canvas_back = document.getElementById('background');
+        var ctx_back = canvas_back.getContext('2d');
+        var path = new Path2D();
+        for(let i = 0;i < 3;++i){
+            path.moveTo(80*(i+1),0);
+            path.lineTo(80*(i+1),320);
+            path.moveTo(0,80*(i+1));
+            path.lineTo(320,80*(i+1));
+        }
+        ctx_back.stroke(path);
+    }
+    back_init();
+
+
 
     </script>
     <style type="text/css">
       canvas { border: 1px solid black; }
     </style>
   </head>
-  <body onload="draw();">
+  <body onload="back_init();">
     <div id = "stage">
         <canvas id="game" width="320" height="320"></canvas>
         <canvas id="background" width="320" height="320"></canvas>
