@@ -71,7 +71,34 @@
     }
 
     function flush(){
-        
+        var canvas_game = document.getElementById('game');
+        var ctx = canvas_game.getContext('2d');
+        ctx.clearRect(0,0,320,320); // clear canvas
+        var path1 = new Path2D();
+        var path2 = new Path2D();
+        for(let i = 0;i < 4;++i){
+            for(let j = 0;j < 4;++j){
+                if(game_info.block[i][j] != 0){
+                    if(game_info.block[i][j] < 16){
+                        ctx.font = "50px serif";
+                        ctx.fillText("" + game_info.block[i][j], 25 + 80*j,58 + 80*i);
+                    }
+                    else if(game_info.block[i][j] < 128){
+                        ctx.font = "40px serif";
+                        ctx.fillText("" + game_info.block[i][j], 20 + 80*j,53 + 80*i);
+                    }
+                    else if(game_info.block[i][j] < 1024){
+                        ctx.font = "40px serif";
+                        ctx.fillText("" + game_info.block[i][j], 10 + 80*j,53 + 80*i);
+                    }
+                    else{
+                        //win
+                    }
+                }
+                path1.rect(5 + 80*i,5 + 80*j,70,70);
+            }
+        }
+        ctx.stroke(path1);
     }
 
     document.onkeydown = function(e){
