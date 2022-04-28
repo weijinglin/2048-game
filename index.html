@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Canvas tutorial</title>
+    <title>2048</title>
     <script type="text/javascript">
-    var canvas_game = document.getElementById('game');
     //进行背景的绘制
-    function back_init(){
+    window.onload = function back_init(){
         var canvas_back = document.getElementById('background');
         var ctx_back = canvas_back.getContext('2d');
         var path = new Path2D();
@@ -17,16 +16,53 @@
         }
         ctx_back.stroke(path);
     }
-    back_init();
+    //back_init();
+
+    var game_info = {
+        block: [4],//二维数组用于记录2048的信息
+    }
+
+    function init(){
+            //先初始化数组
+            console.log("ok");
+            for(var i = 0;i < 4;++i){
+                var b = [4];
+                for(var j = 0;j < 4;++j){
+                    b[j] = 0;
+                }
+                game_info.block[i] = b;
+            }
 
 
+            var x1 = Math.floor(Math.random() * 4);
+            var y1 = Math.floor(Math.random() * 4);
+            var x2 = Math.floor(Math.random() * 4);
+            var y2 = Math.floor(Math.random() * 4);
+            if(x1 == x2 && y1 == y2){
+                y2 = (y1 + 1)%4;
+            }
+            //初始化好两个点
+
+            console.log(x1);
+            console.log(y1);
+            console.log(game_info.block,1,1);
+            game_info.block[x1][y1] = 2;
+            game_info.block[x2][y2] = 2;
+            console.log(game_info.block,1,1);
+            console.log("ok");
+    }
+    init();
+
+    window.onload = function draw(){
+
+    }
 
     </script>
     <style type="text/css">
       canvas { border: 1px solid black; }
     </style>
   </head>
-  <body onload="back_init();">
+  <body >
     <div id = "stage">
         <canvas id="game" width="320" height="320"></canvas>
         <canvas id="background" width="320" height="320"></canvas>
