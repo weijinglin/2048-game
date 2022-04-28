@@ -93,6 +93,8 @@
                     }
                     else{
                         //win
+                        alert("you win");
+                        reset();
                     }
                 }
                 path1.rect(5 + 80*i,5 + 80*j,70,70);
@@ -260,7 +262,6 @@
                     break;
                 for(let j = 0;j < 4;j++){
                     if(game_info.block[i][j] == 0){
-                        box_count++;
                         if(box_count == distance){
                             console.log("hit");
                             var jug = Math.floor(Math.random() * 2);
@@ -330,7 +331,6 @@
                     break;
                 for(let j = 0;j < 4;j++){
                     if(game_info.block[i][j] == 0){
-                        box_count++;
                         if(box_count == distance){
                             console.log("hit");
                             var jug = Math.floor(Math.random() * 2);
@@ -401,7 +401,6 @@
                     break;
                 for(let j = 0;j < 4;j++){
                     if(game_info.block[i][j] == 0){
-                        box_count++;
                         if(box_count == distance){
                             console.log("hit");
                             var jug = Math.floor(Math.random() * 2);
