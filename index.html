@@ -21,10 +21,11 @@
     var game_info = {
         block: [4],//二维数组用于记录2048的信息
     }
+    var isend = false;//游戏是否结束
+    var boxleft = 14;//还有几个格子
 
     function init(){
             //先初始化数组
-            console.log("ok");
             for(var i = 0;i < 4;++i){
                 var b = [4];
                 for(var j = 0;j < 4;++j){
@@ -49,7 +50,6 @@
             game_info.block[x1][y1] = 2;
             game_info.block[x2][y2] = 2;
             console.log(game_info.block,1,1);
-            console.log("ok");
     }
     init();
 
@@ -63,12 +63,304 @@
                 if(game_info.block[i][j] != 0){
                     ctx.font = "50px serif";
                     ctx.fillText("" + game_info.block[i][j], 25 + 80*j,58 + 80*i);
-                    //ctx.fillRect(15 + 80*j,15 + 80*i,50,50);
                 }
                 path1.rect(5 + 80*i,5 + 80*j,70,70);
             }
         }
         ctx.stroke(path1);
+    }
+
+    function flush(){
+        
+    }
+
+    document.onkeydown = function(e){
+        var debug = "box: " + boxleft;
+        console.log(debug);
+        if(e.keyCode == 37){
+            //向左
+            //对game_info进行改变
+            for(let i = 0; i < 4;++i){
+                //先全部移动
+                let count = 0;
+                for(let j = 0;j < 4;++j){
+                    if(game_info.block[i][j] != 0){
+                        var tmp = game_info.block[i][j];
+                        game_info.block[i][j] = 0;
+                        game_info.block[i][count] = tmp;
+                        count++;
+                    }
+                }
+
+                //对于相同的元素合并
+                for(let j = 0;j < 4;++j){
+                    if(j == 3){
+                        break;
+                    }
+                    if(game_info.block[i][j] == game_info.block[i][j+1] && game_info.block[i][j] != 0){
+                        console.log("bomb");
+                        var tmp = game_info.block[i][j];
+                        game_info.block[i][j] = 2*tmp;
+                        game_info.block[i][j+1] = 0;
+                        boxleft++;
+                        j++;
+                    }
+                }
+
+                //再全部移动
+                count = 0;
+                for(let j = 0;j < 4;++j){
+                    if(game_info.block[i][j] != 0){
+                        var tmp = game_info.block[i][j];
+                        game_info.block[i][j] = 0;
+                        game_info.block[i][count] = tmp;
+                        count++;
+                    }
+                }
+            }
+            console.log(game_info.block,1,1);
+            //随机生成一个元素，并判断游戏是否结束
+            var distance = Math.floor(Math.random() * boxleft);
+            console.log(distance);
+            console.log(boxleft);
+            let box_count = 0;
+            for(let i = 0;i < 4;i++){
+                if(box_count > distance)
+                    break;
+                for(let j = 0;j < 4;j++){
+                    if(game_info.block[i][j] == 0){
+                        if(box_count == distance){
+                            console.log("hit");
+                            var jug = Math.floor(Math.random() * 2);
+                            if(jug == 1){
+                                game_info.block[i][j] = 2;
+                            }
+                            else{
+                                game_info.block[i][j] = 4;
+                            }
+                            box_count++;
+                            boxleft--;
+                            break;
+                        }
+                        box_count++;
+                    }
+                }
+            }
+
+
+        }
+        if(e.keyCode == 38){
+            //向上
+            for(let i = 0; i < 4;++i){
+                //先全部移动
+                let count = 0;
+                for(let j = 0;j < 4;++j){
+                    if(game_info.block[j][i] != 0){
+                        var tmp = game_info.block[j][i];
+                        game_info.block[j][i] = 0;
+                        game_info.block[count][i] = tmp;
+                        count++;
+                    }
+                }
+
+                //对于相同的元素合并
+                for(let j = 0;j < 4;++j){
+                    if(j == 3){
+                        break;
+                    }
+                    if(game_info.block[j][i] == game_info.block[j+1][i] && game_info.block[j][i] != 0){
+                        var tmp = game_info.block[j][i];
+                        game_info.block[j][i] = 2*tmp;
+                        game_info.block[j+1][i] = 0;
+                        boxleft++;
+                        j++;
+                    }
+                }
+
+                //再全部移动
+                count = 0;
+                for(let j = 0;j < 4;++j){
+                    if(game_info.block[j][i] != 0){
+                        var tmp = game_info.block[j][i];
+                        game_info.block[j][i] = 0;
+                        game_info.block[count][i] = tmp;
+                        count++;
+                    }
+                }
+            }
+            console.log(game_info.block,1,1);
+            //随机生成一个元素，并判断游戏是否结束
+            var distance = Math.floor(Math.random() * boxleft);
+            let box_count = 0;
+            console.log(distance);
+            console.log(boxleft);
+            for(let i = 0;i < 4;i++){
+                if(box_count > distance)
+                    break;
+                for(let j = 0;j < 4;j++){
+                    if(game_info.block[i][j] == 0){
+                        box_count++;
+                        if(box_count == distance){
+                            console.log("hit");
+                            var jug = Math.floor(Math.random() * 2);
+                            if(jug == 1){
+                                game_info.block[i][j] = 2;
+                            }
+                            else{
+                                game_info.block[i][j] = 4;
+                            }
+                            boxleft--;
+                            box_count++;
+                            break;
+                        }
+                        box_count++;
+                    }
+                }
+            }
+        }
+        if(e.keyCode == 39){
+            //向右
+            //对game_info进行改变
+            for(let i = 0; i < 4;++i){
+                //先全部移动
+                let count = 3;
+                for(let j = 3;j > -1;--j){
+                    if(game_info.block[i][j] != 0){
+                        var tmp = game_info.block[i][j];
+                        game_info.block[i][j] = 0;
+                        game_info.block[i][count] = tmp;
+                        count--;
+                    }
+                }
+
+                //对于相同的元素合并
+                for(let j = 3;j > -1;--j){
+                    if(j == 0){
+                        break;
+                    }
+                    if(game_info.block[i][j] == game_info.block[i][j-1] && game_info.block[i][j] != 0){
+                        var tmp = game_info.block[i][j];
+                        game_info.block[i][j] = 2*tmp;
+                        game_info.block[i][j-1] = 0;
+                        boxleft++;
+                        j--;
+                    }
+                }
+
+                //再全部移动
+                count = 3;
+                for(let j = 3;j > -1;--j){
+                    if(game_info.block[i][j] != 0){
+                        var tmp = game_info.block[i][j];
+                        game_info.block[i][j] = 0;
+                        game_info.block[i][count] = tmp;
+                        count--;
+                    }
+                }
+            }
+            console.log(game_info.block,1,1);
+            //随机生成一个元素，并判断游戏是否结束
+            var distance = Math.floor(Math.random() * boxleft);
+            let box_count = 0;
+            console.log(distance);
+            console.log(boxleft);
+            for(let i = 0;i < 4;i++){
+                if(box_count > distance)
+                    break;
+                for(let j = 0;j < 4;j++){
+                    if(game_info.block[i][j] == 0){
+                        box_count++;
+                        if(box_count == distance){
+                            console.log("hit");
+                            var jug = Math.floor(Math.random() * 2);
+                            if(jug == 1){
+                                game_info.block[i][j] = 2;
+                            }
+                            else{
+                                game_info.block[i][j] = 4;
+                            }
+                            boxleft--;
+                            box_count++;
+                            break;
+                        }
+                        box_count++;
+                        
+                    }
+                }
+            }
+        }
+        if(e.keyCode == 40){
+            //向下
+            console.log("okk3");
+            for(let i = 0; i < 4;++i){
+                //先全部移动
+                let count = 3;
+                for(let j = 3;j > -1;--j){
+                    if(game_info.block[j][i] != 0){
+                        var tmp = game_info.block[j][i];
+                        game_info.block[j][i] = 0;
+                        game_info.block[count][i] = tmp;
+                        count--;
+                    }
+                }
+
+                //对于相同的元素合并
+                for(let j = 3;j > -1;--j){
+                    if(j == 0){
+                        break;
+                    }
+                    if(game_info.block[j][i] == game_info.block[j-1][i] && game_info.block[j][i] != 0){
+                        var tmp = game_info.block[j][i];
+                        game_info.block[j][i] = 2*tmp;
+                        game_info.block[j-1][i] = 0;
+                        boxleft++;
+                        j--;
+                    }
+                }
+
+                //再全部移动
+                count = 3;
+                for(let j = 3;j > -1;--j){
+                    if(game_info.block[j][i] != 0){
+                        var tmp = game_info.block[j][i];
+                        game_info.block[j][i] = 0;
+                        game_info.block[count][i] = tmp;
+                        count--;
+                    }
+                }
+            }
+            console.log(game_info.block,1,1);
+            //随机生成一个元素，并判断游戏是否结束
+            var distance = Math.floor(Math.random() * boxleft);
+            let box_count = 0;
+            console.log(distance);
+            console.log(boxleft);
+            for(let i = 0;i < 4;i++){
+                if(box_count > distance)
+                    break;
+                for(let j = 0;j < 4;j++){
+                    if(game_info.block[i][j] == 0){
+                        box_count++;
+                        if(box_count == distance){
+                            console.log("hit");
+                            var jug = Math.floor(Math.random() * 2);
+                            if(jug == 1){
+                                game_info.block[i][j] = 2;
+                            }
+                            else{
+                                game_info.block[i][j] = 4;
+                            }
+                            box_count++;
+                            boxleft--;
+                            break;
+                        }
+                        box_count++
+                        
+                    }
+                }
+            }
+        }
+        flush();
     }
 
     </script>
