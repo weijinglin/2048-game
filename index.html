@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Canvas tutorial</title>
+    <script type="text/javascript">
+      var canvas = document.getElementById('tutorial');
+      
+
+    </script>
+    <style type="text/css">
+      canvas { border: 1px solid black; }
+    </style>
+  </head>
+  <body onload="draw();">
+    <div id = "stage">
+        <canvas id="game" width="320" height="320"></canvas>
+        <canvas id="background" width="320" height="320"></canvas>
+    </div>
+    <style>
+        #stage {
+            width: 320px;
+            height: 320px;
+            position: relative;
+            border: 2px solid black;
+            transform:translate3d(570px,200px,0px)
+        }
+        canvas { position: absolute; }
+        #game {z-index: 2;}
+        #background {z-index: 1;}
+    </style>
+  </body>
+</html>
