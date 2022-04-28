@@ -54,7 +54,21 @@
     init();
 
     window.onload = function draw(){
-
+        var canvas_game = document.getElementById('game');
+        var ctx = canvas_game.getContext('2d');
+        var path1 = new Path2D();
+        var path2 = new Path2D();
+        for(let i = 0;i < 4;++i){
+            for(let j = 0;j < 4;++j){
+                if(game_info.block[i][j] != 0){
+                    ctx.font = "50px serif";
+                    ctx.fillText("" + game_info.block[i][j], 25 + 80*j,58 + 80*i);
+                    //ctx.fillRect(15 + 80*j,15 + 80*i,50,50);
+                }
+                path1.rect(5 + 80*i,5 + 80*j,70,70);
+            }
+        }
+        ctx.stroke(path1);
     }
 
     </script>
